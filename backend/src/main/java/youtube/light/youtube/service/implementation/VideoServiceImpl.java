@@ -2,9 +2,11 @@ package youtube.light.youtube.service.implementation;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import youtube.light.youtube.model.dto.VideoMetadataDto;
 import youtube.light.youtube.service.VideoService;
-
+@Service
 public class VideoServiceImpl implements VideoService {
 
     @Override
