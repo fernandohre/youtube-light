@@ -22,7 +22,9 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public VideoMetadataDto getVideo(String id) {
         // TODO Auto-generated method stub
-        return null;
+        return new VideoMetadataDto("https://www.youtube.com/watch?v=liKqqPUXYEY", 
+                                      "https://i.ytimg.com/vi/P92SBaN42mQ/hqdefault.jpg?sqp=-oaymwEbCKgBEF5IVfKriqkDDggBFQAAiEIYAXABwAEG&amp;rs=AOn4CLAyoH__f2nFMZk0xBu6HCHTSyu80w", 
+                                      "Arquitetura de Software - Passo a passo");
     }
     
 }
