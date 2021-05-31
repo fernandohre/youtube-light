@@ -1,10 +1,9 @@
 package youtube.light.youtube.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,19 +20,88 @@ import youtube.light.youtube.service.VideoService;
 @RestController
 @RequestMapping(path = "/api/videos")
 public class VideoController {
+    
     @Autowired
     private VideoService videoService;
 
+    // todos os vídeos no sistema. 
     @GetMapping("/findAllVideos")
     public ResponseEntity<List<VideoMetadataDto>> getAllVideos() {
-        return ResponseEntity.ok(this.videoService.getAllVideos());
+        try{
+
+            List<VideoMetadataDto> videos = new ArrayList<VideoMetadataDto>();
+
+            videos = this.videoService.getAllVideos();
+
+            if( videos.isEmpty() ){
+
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+            }
+
+            return new ResponseEntity<>(videos, HttpStatus.OK);
+
+        } catch (Exception e) {
+
+            //TODO: handle exception
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            
+        }
+
+       
     }
 
+    // todos os vídeos do usuário. 
+    // TODO
+    @GetMapping("/findAllVideos/{userId}")
+    public ResponseEntity<List<VideoMetadataDto>> getVideosByUser(@PathVariable String userId) {
+        // TODO
+        try{
+
+            List<VideoMetadataDto> videos = new ArrayList<VideoMetadataDto>();
+
+            videos = this.videoService.getAllVideosByUserId(userId);
+
+            if( videos.isEmpty() ){
+
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+            }
+
+            return new ResponseEntity<>(videos, HttpStatus.OK);
+
+        } catch (Exception e) {
+
+            //TODO: handle exception
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            
+        }
+    }
+
+    // determinado vídeo.
+    // TODO
     @GetMapping("/findVideo/{id}")
     public ResponseEntity<VideoMetadataDto> getVideo(@PathVariable String id) {
-        return ResponseEntity.ok(this.videoService.getVideo(id));
+
+        try {
+
+            VideoMetadataDto video = this.videoService.getVideo(id);
+
+            if ( video == null ) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(video, HttpStatus.OK);
+            }
+            
+        } catch (Exception e) {
+
+            //TODO: handle exception
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
     }
 
+    // TODO
     @DeleteMapping("/deleteVideo/{id}")
     public ResponseEntity<Object> Video(@PathVariable String id) {
         return ResponseEntity.ok(this.videoService.getVideo(id));
