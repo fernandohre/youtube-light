@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * VideoMetadata
  */
-@Document
+@Document(collection = "VideoMetada")
 public class VideoMetadata {
     @Id
     private String id;
