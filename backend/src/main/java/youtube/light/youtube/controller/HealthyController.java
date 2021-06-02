@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 // útil para orquestrador.
 @RestController
 @RequestMapping(path = "/check")
-public class heathyController {
+public class HealthyController {
 
     @GetMapping("/healthServer")
     public ResponseEntity<Object> status() {
