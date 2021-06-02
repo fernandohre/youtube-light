@@ -40,7 +40,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public VideoMetadataDto uploadVideo(MultipartFile file, String description) {
-        
+        //TODO: passar arquivo para o blob
         return null;
     }
     
