@@ -3,35 +3,32 @@
 
 package youtube.light.youtube.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.WritableResource;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import youtube.light.youtube.service.BlobService;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
+
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 
 @RestController
 @RequestMapping("blob")
 public class BlobController {
 
-    @Value("${blob}")
-    private Resource blobFile;
-
-    @GetMapping
-    public String readBlobFile() throws IOException {
-        return StreamUtils.copyToString(
-            this.blobFile.getInputStream(),
-            Charset.defaultCharset());
-    }
+    @Autowired
+    private BlobService blobService;
 
     @PostMapping
-    public String writeBlobFile(@RequestBody String data) throws IOException {
-        try (OutputStream os = ((WritableResource) this.blobFile).getOutputStream()) {
-            os.write(data.getBytes());
-        }
+    public String uploadBlobFile(@RequestParam("file") MultipartFile file) throws IOException {
+        blobService.storeFile(file.getOriginalFilename(), file.getInputStream(), file.getSize());
         return "Arquivo foi atualizado";
     }
 }
