@@ -9,7 +9,6 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobItem;
-import com.ctc.wstx.shaded.msv_core.util.Uri;
 
 import org.springframework.stereotype.Service;
 
