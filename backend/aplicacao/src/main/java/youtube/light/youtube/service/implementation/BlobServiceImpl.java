@@ -25,12 +25,15 @@ public class BlobServiceImpl implements BlobService {
         BlobServiceClient serviceClient = new BlobServiceClientBuilder()
                 .connectionString(azureBlobProperties.getConnectionstring()).buildClient();
         BlobContainerClient container = serviceClient.getBlobContainerClient(azureBlobProperties.getContainer());
+
+        if (!container.exists()) container.create();
+
         return container;
     }
 
     @Override
     public ByteArrayOutputStream downloadFile(String blobitem) {
-        // TODO Auto-generated method stub
+        
         return null;
     }
 
@@ -38,10 +41,11 @@ public class BlobServiceImpl implements BlobService {
     public String storeFile(String filename, InputStream content, long length) {
         
         BlobClient client = containerClient().getBlobClient(filename);
-        if (!client.exists()) {
-            client.upload(content, length);
-        }
-        return "Upload de video concluído com sucesso!";
+        String urlVideo = client.getBlobUrl();
+
+        client.upload(content, length, true);
+
+        return urlVideo;
     }
     
 }
