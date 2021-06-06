@@ -1,5 +1,12 @@
 package youtube.light.youtube.service.implementation;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse.BodyHandler;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +21,7 @@ import youtube.light.youtube.repository.VideoRepository;
 import youtube.light.youtube.service.VideoService;
 @Service
 public class VideoServiceImpl implements VideoService {
-
+    private static String endpointEncoderStoreVideo = "http://localhost:1010/storeVideo";
     @Autowired
     VideoRepository videoRepository;
 
@@ -40,7 +47,15 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public VideoMetadataDto uploadVideo(MultipartFile file, String description) {
-        //TODO: passar arquivo para o blob
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                                             .uri(new URI(endpointEncoderStoreVideo))
+                                             .POST(BodyPublishers.ofByteArray(file.getBytes())).build();
+            
+            HttpRequest<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+
+        }
         return null;
     }
     
