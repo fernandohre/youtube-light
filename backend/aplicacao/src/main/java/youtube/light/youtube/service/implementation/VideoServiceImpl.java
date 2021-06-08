@@ -1,5 +1,6 @@
 package youtube.light.youtube.service.implementation;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -12,18 +13,23 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.InputStreamEditor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import youtube.light.youtube.model.VideoMetadata;
 import youtube.light.youtube.model.dto.VideoMetadataDto;
 import youtube.light.youtube.repository.VideoRepository;
+import youtube.light.youtube.service.BlobService;
 import youtube.light.youtube.service.VideoService;
 @Service
 public class VideoServiceImpl implements VideoService {
     private static String endpointEncoderStoreVideo = "http://localhost:1010/storeVideo";
     @Autowired
     VideoRepository videoRepository;
+
+    @Autowired
+    BlobService blobService;
 
     @Override
     public List<VideoMetadataDto> getAllVideos() {
@@ -47,14 +53,16 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public VideoMetadataDto uploadVideo(MultipartFile file, String description) {
+        InputStream streamVideo = null;
         try {
+            streamVideo = file.getInputStream();
             HttpRequest request = HttpRequest.newBuilder()
                                              .uri(new URI(endpointEncoderStoreVideo))
                                              .POST(BodyPublishers.ofByteArray(file.getBytes())).build();
             
-            HttpRequest<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
-
+            blobService.storeFile(file.getName(), streamVideo, file.getSize());
         }
         return null;
     }
