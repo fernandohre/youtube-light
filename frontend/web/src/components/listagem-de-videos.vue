@@ -1,14 +1,27 @@
 <template>
   <v-row>
-    <template v-for="n in quantidadeDeFileirasHorizontais">
-      <!-- <v-col :key="n" class="mt-2" cols="12">
-        <strong>Categoria {{ n }}</strong>
-      </v-col> -->
+    <v-col
+      v-for="video in videosRenderizados"
+      :key="`${video.description}`"
+      cols="6"
+      md="4"
+    >
+      <v-card class="mx-auto" max-width="344">
+        <v-img
+          src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+          height="200px"
+        ></v-img>
 
-      <v-col v-for="j in n" :key="`${n}${j}`" cols="6" md="2">
-        <v-sheet height="150"></v-sheet>
-      </v-col>
-    </template>
+        <v-card-title> {{ video.description }}</v-card-title>
+        
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn icon>
+            <v-icon>mdi-download</v-icon>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
   </v-row>
 </template>
 
@@ -17,23 +30,23 @@ import axios from "axios";
 export default {
   created() {
     let _this = this;
-    axios.get("http://localhost:1010/api/videos/findAllVideos")
-         .then(response => {
-           console.log(response);
-           _this.videos = response.data;
-         })
-         .catch(e => console.log("Algo de errado não está certo!", e));
+    axios
+      .get("http://localhost:1010/api/videos/findAllVideos")
+      .then((response) => {
+        console.log(response);
+        _this.videos = response.data;
+      })
+      .catch((e) => console.log("Algo de errado não está certo!", e));
   },
   data() {
     return {
-      videos: []
-    }
+      videos: [],
+    };
   },
   computed: {
-    quantidadeDeFileirasHorizontais() {
-      let tamanho = this.videos.length | 4;
-      return tamanho / 4;
-    }
-  }
+    videosRenderizados() {
+      return this.videos;
+    },
+  },
 };
 </script>
