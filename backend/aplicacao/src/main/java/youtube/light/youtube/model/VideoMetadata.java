@@ -1,6 +1,7 @@
 package youtube.light.youtube.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -14,7 +15,8 @@ public class VideoMetadata {
     private String linkThumbnail;
     private String linkDownload;
     private String userId;
-
+    
+    @PersistenceConstructor
     public VideoMetadata(String id, String linkDownload, String linkThumbnail, String description, String userId) {
 
         this.id = id;

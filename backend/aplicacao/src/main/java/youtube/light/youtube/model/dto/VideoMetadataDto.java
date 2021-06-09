@@ -30,6 +30,8 @@ public class VideoMetadataDto {
         this.linkThumbnail = video.getLinkThumbnail();
 
         this.description = video.getDescription();
+
+        this.userId = video.getUserId();
     }
 
     public static List<VideoMetadataDto> converter(List<VideoMetadata> videos) {

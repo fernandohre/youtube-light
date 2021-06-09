@@ -32,9 +32,7 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public List<VideoMetadataDto> getAllVideos() {
   
-        List<VideoMetadata> list = new ArrayList<VideoMetadata>();
-        
-        videoRepository.findAll().forEach(list::add);
+        List<VideoMetadata> list = videoRepository.findAll();
 
         return VideoMetadataDto.converter(list);
     }

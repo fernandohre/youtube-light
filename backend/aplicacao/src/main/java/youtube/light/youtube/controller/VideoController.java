@@ -34,18 +34,12 @@ public class VideoController {
 
             videos = this.videoService.getAllVideos();
 
-            if( videos.isEmpty() ){
+            if( videos.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-            }
-
-            return new ResponseEntity<>(videos, HttpStatus.OK);
+            return new ResponseEntity<List<VideoMetadataDto>>(videos, HttpStatus.OK);
 
         } catch (Exception e) {
-
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-            
         }
 
        
@@ -55,19 +49,16 @@ public class VideoController {
     public ResponseEntity<VideoMetadataDto> getVideo(@PathVariable String id) {
 
         try {
-
             VideoMetadataDto video = this.videoService.getVideo(id);
 
             if ( video == null ) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<>(video, HttpStatus.OK);
+                return new ResponseEntity<VideoMetadataDto>(video, HttpStatus.OK);
             }
             
         } catch (Exception e) {
-
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-
         }
     }
 
