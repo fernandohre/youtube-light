@@ -31,7 +31,7 @@ export default {
         formData.append("file", this.fileVideo);
         formData.append("description", this.description)
       }
-      axios.post("http://localhost:1010/api/videos", formData)
+      axios.post("http://localhost:1010/api/videos/upload", formData)
         .then((response) => {
           console.log("Success!");
           console.log({ response });
