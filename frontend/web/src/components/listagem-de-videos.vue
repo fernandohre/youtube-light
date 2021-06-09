@@ -8,12 +8,12 @@
     >
       <v-card class="mx-auto" max-width="344">
         <v-img
-          src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+          :src="video.linkThumbnail"
           height="200px"
         ></v-img>
 
         <v-card-title> {{ video.description }}</v-card-title>
-        
+
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn icon>
