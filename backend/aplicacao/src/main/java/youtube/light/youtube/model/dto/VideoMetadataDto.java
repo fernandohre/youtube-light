@@ -8,6 +8,25 @@ public class VideoMetadataDto {
     private String linkDownload;
     private String linkThumbnail;
     private String description;
+    private String userId;
+
+    public VideoMetadataDto(String linkDownload, 
+                            String linkThumbnail, 
+                            String description) {
+        this.linkDownload = linkDownload;
+        this.linkThumbnail = linkThumbnail;
+        this.description = description;
+    }
+
+    public VideoMetadataDto(String linkDownload, 
+                            String linkThumbnail, 
+                            String description,
+                            String userId) {
+        this.linkDownload = linkDownload;
+        this.linkThumbnail = linkThumbnail;
+        this.description = description;
+        this.userId = userId;
+    }
 
     public VideoMetadataDto(VideoMetadata video) {
 
@@ -24,6 +43,10 @@ public class VideoMetadataDto {
 
     }
 
+    public static VideoMetadata converter(VideoMetadataDto video) {
+        return new VideoMetadata(video.getLinkDownload(), video.getLinkThumbnail(), video.getDescription(), video.getUserId());
+    }
+
     public String getLinkDownload() {
 
         return linkDownload;
@@ -38,5 +61,9 @@ public class VideoMetadataDto {
 
         return linkThumbnail;
         
+    }
+
+    public String getUserId() {
+        return userId;
     }
 }

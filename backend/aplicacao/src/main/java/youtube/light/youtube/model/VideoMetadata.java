@@ -28,6 +28,16 @@ public class VideoMetadata {
         this.userId = userId;
     }
 
+    public VideoMetadata(String linkDownload, String linkThumbnail, String description, String userId) {
+        this.description = description;
+
+        this.linkDownload = linkDownload;
+
+        this.linkThumbnail = linkThumbnail;
+
+        this.userId = userId;
+    }
+
     public String getId() {
 
         return id;

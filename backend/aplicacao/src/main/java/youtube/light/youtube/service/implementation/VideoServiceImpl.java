@@ -6,14 +6,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
-import java.net.http.HttpResponse.BodyHandler;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.InputStreamEditor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +21,8 @@ import youtube.light.youtube.service.BlobService;
 import youtube.light.youtube.service.VideoService;
 @Service
 public class VideoServiceImpl implements VideoService {
-    private static String endpointEncoderStoreVideo = "http://localhost:1010/storeVideo";
+    private static String endpointEncoderStoreVideo = "http://localhost:1011/storeVideo";
+    private static String userId = "usuarioPadraoId";
     @Autowired
     VideoRepository videoRepository;
 
@@ -54,17 +52,23 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public VideoMetadataDto uploadVideo(MultipartFile file, String description) {
         InputStream streamVideo = null;
+        String urlVideo = "";
         try {
             streamVideo = file.getInputStream();
             HttpRequest request = HttpRequest.newBuilder()
                                              .uri(new URI(endpointEncoderStoreVideo))
                                              .POST(BodyPublishers.ofByteArray(file.getBytes())).build();
             
-            HttpResponse<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+            HttpClient.newBuilder()
+                      .build()
+                      .send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
-            blobService.storeFile(file.getName(), streamVideo, file.getSize());
+            urlVideo = blobService.storeFile(file.getOriginalFilename(), streamVideo, file.getSize());
         }
-        return null;
+        //Passando nulo para a thumbnail, pois a url dela não foi implementada
+        VideoMetadataDto metadata = new VideoMetadataDto(urlVideo, null, description, userId);
+        videoRepository.save(VideoMetadataDto.converter(metadata));
+        return metadata;
     }
     
 }

@@ -21,7 +21,7 @@ public class VideoController {
     
     private static String MessageEmptyFileVideo = "Arquivo de vídeo vazio.";
     private static String MessageEmptyDesciptionVideo = "Video sem descrição";
-    private static String MessageSendingVideoUpload = "Enviando video para upload.";
+    private static String MessageSendedVideoUpload = "Video enviado para upload.";
 
     @Autowired
     private VideoService videoService;
@@ -79,7 +79,7 @@ public class VideoController {
 
         try {
             this.videoService.uploadVideo(file, description);
-            return GetReponse(true, MessageSendingVideoUpload);
+            return GetReponse(true, MessageSendedVideoUpload);
         } catch (Exception e) {
             return GetReponse(false, e.getMessage());
         }
