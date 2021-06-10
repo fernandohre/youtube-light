@@ -11,4 +11,6 @@ public interface VideoService {
     List<VideoMetadataDto> getAllVideos();
     VideoMetadataDto getVideo(String id);
     VideoMetadataDto uploadVideo(MultipartFile file, String description);
+
+    byte[] download(String blobName);
 }

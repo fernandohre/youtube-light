@@ -4,9 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +23,7 @@ import youtube.light.youtube.service.BlobService;
 public class BlobServiceImpl implements BlobService {
 
     private final AzureBlobProperties azureBlobProperties = new AzureBlobProperties();
-
+    
     private BlobContainerClient containerClient() {
         BlobServiceClient serviceClient = new BlobServiceClientBuilder()
                 .connectionString(azureBlobProperties.getConnectionstring()).buildClient();
@@ -33,8 +36,11 @@ public class BlobServiceImpl implements BlobService {
 
     @Override
     public ByteArrayOutputStream downloadFile(String blobitem) {
-        
-        return null;
+        BlobContainerClient containerClient = containerClient();
+        BlobClient blobClient = containerClient.getBlobClient(blobitem);
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        blobClient.download(os);
+        return os;
     }
 
     @Override

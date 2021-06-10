@@ -37,6 +37,10 @@ public class VideoServiceImpl implements VideoService {
         return VideoMetadataDto.converter(list);
     }
 
+    public byte[] download(String blobName) {
+        return blobService.downloadFile(blobName).toByteArray();
+    }
+
     @Override
     public VideoMetadataDto getVideo(String id) {
 
